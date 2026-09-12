@@ -9,7 +9,17 @@
 * 🟢 You can import this file directly.
 */
 
+export const Role = {
+  ADMIN: 'ADMIN',
+  OPERATOR: 'OPERATOR'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const MovementType = {
+  IN: 'IN',
+  OUT: 'OUT'
+} as const
+
+export type MovementType = (typeof MovementType)[keyof typeof MovementType]
