@@ -8,6 +8,7 @@ import {
   Param,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -19,12 +20,14 @@ import {
   ApiUpdateCategory,
   ApiDeleteCategory,
 } from './swagger/categories.swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiCreateCategory()
   async create(@Body() dto: CreateCategoryDto) {
     return await this.categoriesService.create(dto);
@@ -43,12 +46,14 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiUpdateCategory()
   async update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
     return await this.categoriesService.update(id, dto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiDeleteCategory()
   async delete(@Param('id') id: string) {
