@@ -14,5 +14,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
       useClass: CategoriesRepository
     }
   ],
+  exports: [CategoriesService]
 })
 export class CategoriesModule {}
