@@ -17,6 +17,7 @@ import { ProductExistsPipe } from './pipes/product-exists.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { StockMovementsService } from 'src/stock-movements/stock-movements.service';
 import {
   ApiCreateProduct,
   ApiFindAllProducts,
@@ -27,7 +28,11 @@ import {
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly stockMovementsService: StockMovementsService, 
+
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -46,6 +51,12 @@ export class ProductsController {
   @ApiFindOneProduct()
   findOne(@Param('id', ProductExistsPipe) id: string) {
     return this.productsService.findById(id);
+  }
+
+  @Get(':id/movements')
+  @UseGuards(JwtAuthGuard)
+  findMovements(@Param('id', ProductExistsPipe) id: string) {
+    return this.stockMovementsService.findByProduct(id);
   }
 
   @Patch(':id')
