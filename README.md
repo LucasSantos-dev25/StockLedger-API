@@ -6,17 +6,16 @@
 
 ## 🚀 Sobre o projeto
 
-O **StockLedger** nasceu com uma proposta simples e ao mesmo tempo ambiciosa: **construir um sistema de estoque não como "mais um CRUD", mas como um registro auditável de verdade** — um *ledger*. Cada entrada e saída de produto é um evento rastreável, vinculado a um usuário e a um instante no tempo, garantido por transações atômicas no banco de dados. Não existe "editar a quantidade na mão" aqui: o saldo de cada produto é sempre o resultado direto do seu histórico de movimentações.
+O **StockLedger** O StockLedger nasceu para resolver a falta de governança, auditoria e confiança na gestão de inventário. Em vez de tratar o estoque como uma lousa onde os números são apagados e reescritos, ele trata o estoque com o mesmo rigor de um livro-razão (ledger) bancário.
 
-Mais do que uma API funcional, este projeto é um exercício deliberado de **arquitetura limpa e fundamentos sólidos de backend**: separação de responsabilidades entre Controller, Service e Repository, contratos de dados explícitos via DTOs, validação declarativa com Pipes, autenticação e autorização de verdade com JWT, e tudo isso containerizado para rodar em qualquer lugar com um único comando.
+Mais do que uma API funcional, este projeto utiliza princípios de **arquitetura limpa e fundamentos sólidos de backend**: separação de responsabilidades entre Controller, Service e Repository, contratos de dados explícitos via DTOs, validação declarativa com Pipes, autenticação e autorização com JWT, e tudo isso containerizado para ser disponibilizado em qualquer lugar com um único comando.
 
-Se você está aqui pra entender **como construir uma API NestJS que aguenta crescer**, este repositório foi feito pra isso.
-
+O projeto foi construído desde o início visando escalabilidade e boas práticas de desenvolvimento com os princípios SOLID.
 ---
 
 ## ✨ Principais destaques
 
-- 🧱 **Arquitetura em camadas de verdade** — Controller → Service → Repository, com interfaces desacoplando regra de negócio de acesso a dado
+- 🧱 **Arquitetura em camadas** — Controller → Service → Repository, com interfaces desacoplando regra de negócio de acesso a dado
 - 🔐 **Autenticação e autorização completas** — JWT + Guards + controle de acesso por papel (`ADMIN` / `OPERATOR`)
 - 🧾 **Histórico de estoque auditável** — toda movimentação é um evento imutável, nunca uma edição direta
 - ⚛️ **Consistência transacional** — entradas e saídas de estoque usam `$transaction` do Prisma, garantindo que o histórico e o saldo nunca fiquem dessincronizados
@@ -69,13 +68,9 @@ Requisição HTTP
   PostgreSQL
 ```
 
-### Por que uma camada de Repository, se o Prisma já é um ORM?
-
-Porque o `Service` nunca deveria saber *como* o dado é persistido — só *o que* precisa ser feito com ele. Cada módulo expõe uma interface (`IProductsRepository`, `ICategoriesRepository`...) e uma implementação concreta injetada via token do NestJS. Isso significa:
 
 - **Testes sem banco**: o Service é testado mockando a interface, não o Prisma inteiro
 - **Independência de infraestrutura**: trocar de ORM (ou adicionar cache, por exemplo) afeta só a implementação, nunca a regra de negócio
-- **Fronteiras explícitas**: qualquer pessoa lendo o código sabe exatamente onde a lógica de domínio termina e o acesso a dado começa
 
 ### Módulos do domínio
 
